@@ -11,9 +11,23 @@ Customer churn is a core retention challenge for subscription businesses. This p
 | Component | Link |
 |---|---|
 | Tableau dashboard | [Customer Churn Overview](https://public.tableau.com/authoring/CustomerChurnOverview_17887208651510/CustomerChurnAnalysisDashboard#2) |
-| Colab analysis notebook | [PythonforData.ipynb](https://colab.research.google.com/drive/14_MXyQQ4GYtJF-65qDfnB6snVVR0nvT0#scrollTo=H1dY1YdLaPj7) |
+| Original Colab analysis | [PythonforData.ipynb](https://colab.research.google.com/drive/14_MXyQQ4GYtJF-65qDfnB6snVVR0nvT0#scrollTo=H1dY1YdLaPj7) |
 | Snowflake SQL workspace | [SalesChurn.sql](https://app.snowflake.com/me-central2.gcp/do10993/#/workspaces/ws/USER%24/PUBLIC/ETL%20PIPELINE/SalesChurn.sql) |
+| Repository notebook | [`customer_churn_analysis.ipynb`](./customer_churn_analysis.ipynb) |
 | Author profile | [Omkar8329](https://github.com/Omkar8329) |
+
+## Code Provenance and Versioning
+
+The linked Colab notebook is **the original exploratory analysis authored by Omkar Karnik**. The Python script and Jupyter notebook stored in this repository are **refactored, repository-ready implementations of the same analytical workflow**. They are intentionally not presented as byte-for-byte copies of the Colab export.
+
+| Artifact | Role | Relationship |
+|---|---|---|
+| Original Colab notebook | Original exploratory work and source reference | Source of the analysis sequence and initial findings |
+| `customer_churn_analysis.py` | Refactored Python implementation | Adds reusable paths, validation, clean-data export, and figure generation |
+| `customer_churn_analysis.ipynb` | Clean repository notebook | Reorganizes the same workflow into reproducible notebook cells |
+| `sales_churn_template.sql` | Portable Snowflake SQL template | Documents the analytical SQL without exposing account-specific objects or credentials |
+
+This distinction is intentional: reviewers can inspect your original work in Colab and use the GitHub implementation for a cleaner, reproducible project structure.
 
 ## Workflow
 
@@ -49,7 +63,7 @@ customer-churn-analysis-telecom/
 └── data_dictionary.md
 ```
 
-The Python script and notebook are the reproducible analysis assets. The SQL template documents the Snowflake workflow without exposing environment-specific credentials or objects.
+The Python script and notebook are the refactored repository implementations. The original Colab remains linked above as the source analysis. The SQL template documents the Snowflake workflow without exposing environment-specific credentials or objects.
 
 ## Running the Python Analysis
 
@@ -64,7 +78,7 @@ The script writes the cleaned dataset to `data/clean_data.csv` when the input fi
 
 ## Data Source
 
-The analysis is based on the commonly used IBM Telco Customer Churn dataset. The raw CSV is intentionally not committed to this repository; add it locally under `data/` or use the linked Colab notebook as the source environment.
+The analysis is based on the commonly used IBM Telco Customer Churn dataset. The raw CSV is intentionally not committed to this repository. Add it locally under `data/` when running the refactored implementation, or open the linked Colab notebook to review the original source workflow.
 
 ## Recommended Business Actions
 
