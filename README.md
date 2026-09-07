@@ -29,6 +29,20 @@ The linked Colab notebook is **the original exploratory analysis authored by Omk
 
 This distinction is intentional: reviewers can inspect your original work in Colab and use the GitHub implementation for a cleaner, reproducible project structure.
 
+## My Contribution
+
+I completed the project workflow end to end. I cleaned and validated the telecom customer data in Python, converted `TotalCharges` into a usable numeric field, handled incomplete records, calculated churn metrics, and prepared the analysis-ready dataset. I wrote analytical SQL for Snowflake to summarize churn overall and by contract, created and refined the Tableau dashboard for executive viewing, and documented the methodology, data dictionary, business findings, and relationship between the original Colab analysis and the refactored repository implementation.
+
+## Executive Takeaway
+
+| Finding | Business implication |
+|---|---|
+| The cleaned dataset contains 7,032 customers and the overall churn rate is 26.58%. | Churn is material enough to justify a focused retention program rather than a broad, undifferentiated campaign. |
+| Month-to-month customers have approximately 42.71% churn, compared with 11.28% for one-year contracts and 2.85% for two-year contracts. | Contract commitment is the clearest observed risk signal and should guide retention prioritization. |
+| Churn varies across tenure, internet service, and payment method segments. | Retention actions should be segmented by customer lifecycle and service/payment experience instead of treating all customers identically. |
+
+Recommended actions are to prioritize month-to-month customers for targeted retention offers, design early-tenure onboarding and engagement interventions, and investigate payment-method and service-experience journeys before testing personalized campaigns. These actions should be validated with profitability, usage, complaint, and campaign-response data.
+
 ## Workflow
 
 1. Load the raw `WA_Fn-UseC_-Telco-Customer-Churn.csv` dataset.
@@ -60,7 +74,9 @@ customer-churn-analysis-telecom/
 ├── customer_churn_analysis.ipynb
 ├── sales_churn_template.sql
 ├── methodology.md
-└── data_dictionary.md
+├── data_dictionary.md
+└── tests/
+    └── test_validation.py
 ```
 
 The Python script and notebook are the refactored repository implementations. The original Colab remains linked above as the source analysis. The SQL template documents the Snowflake workflow without exposing environment-specific credentials or objects.
@@ -75,6 +91,16 @@ python customer_churn_analysis.py
 ```
 
 The script writes the cleaned dataset to `data/clean_data.csv` when the input file is available.
+
+## Validation Checks
+
+The repository includes a lightweight `unittest` suite that validates the core cleaning behavior, churn metric calculation, required analysis columns, and the documented source benchmark. The tests use a small deterministic fixture and do not require committing the source customer data.
+
+Run the checks from the repository root:
+
+```bash
+python -m unittest discover -s tests -v
+```
 
 ## Data Source
 

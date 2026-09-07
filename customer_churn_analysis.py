@@ -1,7 +1,7 @@
-"""Customer Churn Analysis (Telecom)
+"""Customer Churn Analysis (Telecom).
 
-Reproducible version of the exploratory workflow from the linked Colab notebook.
-Expected input: data/WA_Fn-UseC_-Telco-Customer-Churn.csv
+Refactored, reproducible implementation of the exploratory workflow from the
+linked Colab notebook.
 """
 
 from pathlib import Path
@@ -17,39 +17,60 @@ OUTPUT_PATH = ROOT / "data" / "clean_data.csv"
 FIGURE_PATH = ROOT / "assets" / "churn_count.png"
 
 
+def clean_customer_data(df: pd.DataFrame) -> pd.DataFrame:
+    """Convert charge fields and remove rows without valid total charges."""
+    cleaned = df.copy()
+    cleaned["TotalCharges"] = pd.to_numeric(cleaned["TotalCharges"], errors="coerce")
+    return cleaned.dropna(subset=["TotalCharges"]).copy()
+
+
+def calculate_metrics(df: pd.DataFrame) -> dict[str, float | int]:
+    """Return core portfolio metrics for a cleaned customer dataset."""
+    churned = int((df["Churn"] == "Yes").sum())
+    total = int(len(df))
+    return {
+        "total_customers": total,
+        "churned_customers": churned,
+        "churn_rate": round(100 * churned / total, 2) if total else 0.0,
+    }
+
+
 def main() -> None:
     if not INPUT_PATH.exists():
         raise FileNotFoundError(
             f"Place WA_Fn-UseC_-Telco-Customer-Churn.csv at {INPUT_PATH} before running."
         )
 
-    df = pd.read_csv(INPUT_PATH)
+    raw = pd.read_csv(INPUT_PATH)
+    print("Raw shape:", raw.shape)
+    print("Duplicate rows:", raw.duplicated().sum())
+    print("Unique customers:", raw["customerID"].nunique())
 
-    print("Raw shape:", df.shape)
-    print("Duplicate rows:", df.duplicated().sum())
-    print("Unique customers:", df["customerID"].nunique())
+    missing_before_cleaning = int(
+        pd.to_numeric(raw["TotalCharges"], errors="coerce").isna().sum()
+    )
+    print("Missing TotalCharges after conversion:", missing_before_cleaning)
 
-    # TotalCharges is delivered as text in the source data.
-    df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
-    missing_total_charges = int(df["TotalCharges"].isna().sum())
-    print("Missing TotalCharges after conversion:", missing_total_charges)
-
-    df = df.dropna(subset=["TotalCharges"]).copy()
-
-    churn_rate = df["Churn"].value_counts(normalize=True).get("Yes", 0) * 100
-    print(f"Clean shape: {df.shape}")
-    print(f"Overall churn rate: {churn_rate:.2f}%")
+    df = clean_customer_data(raw)
+    metrics = calculate_metrics(df)
+    print("Clean shape:", df.shape)
+    print(f"Overall churn rate: {metrics['churn_rate']:.2f}%")
     print("Churn counts:\n", df["Churn"].value_counts())
 
-    # Export the analysis-ready dataset for downstream SQL/Tableau use.
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUTPUT_PATH, index=False)
 
-    # Save a lightweight validation figure for the repository.
     FIGURE_PATH.parent.mkdir(parents=True, exist_ok=True)
     sns.set_theme(style="whitegrid")
     plt.figure(figsize=(6, 4))
-    ax = sns.countplot(data=df, x="Churn", order=["No", "Yes"], palette=["#4E79A7", "#E15759"])
+    ax = sns.countplot(
+        data=df,
+        x="Churn",
+        order=["No", "Yes"],
+        hue="Churn",
+        palette=["#4E79A7", "#E15759"],
+        legend=False,
+    )
     ax.set_title("Customer Churn Count")
     ax.set_xlabel("Churn")
     ax.set_ylabel("Customers")
