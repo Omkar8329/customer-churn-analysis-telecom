@@ -75,8 +75,7 @@ customer-churn-analysis-telecom/
 ├── sales_churn_template.sql
 ├── methodology.md
 ├── data_dictionary.md
-└── tests/
-    └── test_validation.py
+└── test_validation.py
 ```
 
 The Python script and notebook are the refactored repository implementations. The original Colab remains linked above as the source analysis. The SQL template documents the Snowflake workflow without exposing environment-specific credentials or objects.
@@ -99,7 +98,7 @@ The repository includes a lightweight `unittest` suite that validates the core c
 Run the checks from the repository root:
 
 ```bash
-python -m unittest discover -s tests -v
+python -m unittest test_validation -v
 ```
 
 ## Data Source
