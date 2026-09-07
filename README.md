@@ -10,7 +10,7 @@ Customer churn is a core retention challenge for subscription businesses. This p
 
 | Component | Link |
 |---|---|
-| Tableau dashboard | [Customer Churn Overview](https://public.tableau.com/views/CustomerChurnOverview_17887208651510/CustomerChurnAnalysisDashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link) |
+| Tableau dashboard | [Customer Churn Overview](https://public.tableau.com/authoring/CustomerChurnOverview_17887208651510/CustomerChurnAnalysisDashboard#2) |
 | Original Colab analysis | [PythonforData.ipynb](https://colab.research.google.com/drive/14_MXyQQ4GYtJF-65qDfnB6snVVR0nvT0#scrollTo=H1dY1YdLaPj7) |
 | Snowflake SQL workspace | [SalesChurn.sql](https://app.snowflake.com/me-central2.gcp/do10993/#/workspaces/ws/USER%24/PUBLIC/ETL%20PIPELINE/SalesChurn.sql) |
 | Repository notebook | [`customer_churn_analysis.ipynb`](./customer_churn_analysis.ipynb) |
@@ -63,7 +63,7 @@ The dashboard further explores churn by internet service, payment method, and te
 
 ## Repository Contents
 
-The GitHub web upload keeps the initial project files at the repository root for easy access:
+The repository keeps the project files at the repository root for easy access:
 
 ```text
 customer-churn-analysis-telecom/
